@@ -1,0 +1,51 @@
+package com.example.express_eat;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+public class Popeyes_Food extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+    String name[],price[];
+    int image[];
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_foods_per_restaurant);
+        String category = getIntent().getStringExtra("CATEGORY");
+        switch(category){
+            case "burger":
+                name = getResources().getStringArray(R.array.popeyesburgers);
+                price = getResources().getStringArray(R.array.popeyesburgersprices);
+                image = new int[] {R.drawable.chicken_french_quarter,R.drawable.spicy_chicken_sandwich,
+                        R.drawable.fishurger, R.drawable.u_s__spicy_chicken_sandwich,R.drawable.chicken_burger};
+                break;
+            case "combo":
+                name = getResources().getStringArray(R.array.popeyescombodeals);
+                price = getResources().getStringArray(R.array.popeyescombodealsprices);
+                image = new int[] {R.drawable.sixpcsundleaa,R.drawable.twelve_pieces,
+                        R.drawable.two_pieces_chicken___rice___drink, R.drawable.one_pc_chicken___rice___drink,};
+                break;
+            case "fries":
+                name = getResources().getStringArray(R.array.popeyesfries);
+                price = getResources().getStringArray(R.array.popeyesfriesprices);
+                image =new int[] {R.drawable.regular_fries,R.drawable.cheeseries};
+                break;
+            case "drinks":
+                name = getResources().getStringArray(R.array.popeyesdrinks);
+                price = getResources().getStringArray(R.array.popeyesdrinksprices);
+                image =new int[] {R.drawable.cola,R.drawable.sprite_,R.drawable.bottled_water,
+                        R.drawable.dr_pepper};
+                break;
+        }
+
+
+        recyclerView = findViewById(R.id.recyclerView);
+        FoodAdapter foodAdapter = new FoodAdapter(this, name, price, image);
+        recyclerView.setAdapter(foodAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+}
