@@ -21,7 +21,7 @@ public class LogIn extends AppCompatActivity {
 
     private EditText e_email, e_password;
     private Button sign_in;
-    private TextView forgot_pass;
+    private TextView forgot_pass, e_signup;
     private FirebaseAuth mAuth;
 
     public void openMenu() {
@@ -35,11 +35,23 @@ public class LogIn extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openSignUp(){
+        Intent intent = new Intent(this, Register.class);
+        startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
+
+        e_signup = (TextView) findViewById(R.id.SignUp);
+        e_signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSignUp();
+            }
+        });
         e_email = (EditText) findViewById(R.id.txtEmail);
         e_password = (EditText) findViewById(R.id.txt_pass);
         sign_in = (Button) findViewById(R.id.submit_btn);
