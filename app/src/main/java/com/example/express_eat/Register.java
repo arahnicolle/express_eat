@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
@@ -50,11 +51,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     }
 
     public void registerUser() {
-        String username = eUsername.getText().toString().trim();
-        String email = eEmail.getText().toString().trim();
+        final String username = eUsername.getText().toString().trim();
+        final String email = eEmail.getText().toString().trim();
         String password = ePassword.getText().toString().trim();
         String re_enter = Re_enter.getText().toString().trim();
-        String location = eLocation.getText().toString().trim();
+        final String location = eLocation.getText().toString().trim();
 
         if (TextUtils.isEmpty(username)) {
             Toast.makeText(getApplicationContext(), "Enter email username.", Toast.LENGTH_SHORT).show();
@@ -75,30 +76,55 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             return;
         }
 
+
         if (TextUtils.isEmpty(location)) {
             Toast.makeText(getApplicationContext(), "Please put your location.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(Register.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(Register.this, LogIn.class);
-                    startActivity(i);
+                    User user = new User(username, email, location);
+
+                    FirebaseDatabase.getInstance().getReference("User")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(Register.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(Register.this, LogIn.class);
+                                startActivity(i);
+                                finish();
+                            } else {
+                                Toast.makeText(Register.this, "Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+
+            public void onClick(View view) {
+
+                if (view == eSubmit) {
+                    registerUser();
+
+                }
+
+                if (view == eLogin) {
+                    Intent b = new Intent(Register.this, LogIn.class);
+                    startActivity(b);
                     finish();
-                } else {
-                    Toast.makeText(Register.this, "Please try again", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
     }
 
-
+    @Override
     public void onClick(View view) {
-
         if (view == eSubmit) {
             registerUser();
 
