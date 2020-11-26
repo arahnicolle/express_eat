@@ -57,9 +57,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         String re_enter = Re_enter.getText().toString().trim();
         final String location = eLocation.getText().toString().trim();
 
-        if (TextUtils.isEmpty(username)) {
+        if (username.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Enter email username.", Toast.LENGTH_SHORT).show();
             return;
+            
         } else if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "Enter username.", Toast.LENGTH_SHORT).show();
             return;

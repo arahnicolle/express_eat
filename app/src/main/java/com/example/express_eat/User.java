@@ -8,8 +8,8 @@ public class User {
 
     }
 
-    public User(String UserName, String email, String location){
-        this.username = UserName;
+    public User(String username, String email, String location){
+        this.username = username;
         this.email = email;
         this.location = location;
 
